@@ -1,45 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Virtual Joystick</title>
+    <title>방향키 버튼</title>
     <style>
-        #joystick-container {
-            width: 200px;
-            height: 200px;
-            background-color: lightgray;
-            border-radius: 50%;
-            position: absolute;
-            left: 20px;
-            bottom: 20px;
-        }
-        #joystick {
-            width: 100px;
-            height: 100px;
-            background-color: gray;
-            border-radius: 50%;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-        }
-        #character {
+        .arrow-button {
             width: 50px;
             height: 50px;
-            background-color: red;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
+            margin: 5px;
+            font-size: 24px;
         }
     </style>
 </head>
 <body>
-    <div id="joystick-container">
-        <div id="joystick"></div>
+    <div>
+        <button class="arrow-button" id="up">↑</button>
     </div>
-    <div id="character"></div>
-    <script src="joystick.js"></script>
+    <div>
+        <button class="arrow-button" id="left">←</button>
+        <button class="arrow-button" id="down">↓</button>
+        <button class="arrow-button" id="right">→</button>
+    </div>
+    <div id="output"></div>
+
+    <script>
+        document.addEventListener('keydown', function(event) {
+            const output = document.getElementById('output');
+            switch(event.key) {
+                case 'ArrowUp':
+                    output.textContent = '위쪽 방향키가 눌렸습니다.';
+                    break;
+                case 'ArrowDown':
+                    output.textContent = '아래쪽 방향키가 눌렸습니다.';
+                    break;
+                case 'ArrowLeft':
+                    output.textContent = '왼쪽 방향키가 눌렸습니다.';
+                    break;
+                case 'ArrowRight':
+                    output.textContent = '오른쪽 방향키가 눌렸습니다.';
+                    break;
+                default:
+                    output.textContent = '다른 키가 눌렸습니다.';
+            }
+        });
+
+        document.getElementById('up').addEventListener('click', function() {
+            document.dispatchEvent(new KeyboardEvent('keydown', {'key': 'ArrowUp'}));
+        });
+        document.getElementById('down').addEventListener('click', function() {
+            document.dispatchEvent(new KeyboardEvent('keydown', {'key': 'ArrowDown'}));
+        });
+        document.getElementById('left').addEventListener('click', function() {
+            document.dispatchEvent(new KeyboardEvent('keydown', {'key': 'ArrowLeft'}));
+        });
+        document.getElementById('right').addEventListener('click', function() {
+            document.dispatchEvent(new KeyboardEvent('keydown', {'key': 'ArrowRight'}));
+        });
+    </script>
 </body>
 </html>
