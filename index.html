@@ -3,12 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Joystick Control</title>
+    <title>Virtual Joystick</title>
     <style>
+        #joystick-container {
+            width: 200px;
+            height: 200px;
+            background-color: lightgray;
+            border-radius: 50%;
+            position: absolute;
+            left: 20px;
+            bottom: 20px;
+        }
         #joystick {
             width: 100px;
             height: 100px;
-            background-color: lightgray;
+            background-color: gray;
             border-radius: 50%;
             position: absolute;
             left: 50%;
@@ -27,7 +36,9 @@
     </style>
 </head>
 <body>
-    <div id="joystick"></div>
+    <div id="joystick-container">
+        <div id="joystick"></div>
+    </div>
     <div id="character"></div>
     <script src="joystick.js"></script>
 </body>
