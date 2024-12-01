@@ -1,5 +1,7 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
+const joystick = document.getElementById('joystick');
+const stick = joystick.querySelector('.stick');
 
 let player = {
     x: canvas.width / 2 - 15,
@@ -38,38 +40,28 @@ function update() {
     requestAnimationFrame(update);
 }
 
-function moveUp() { player.dy = -player.speed; }
-function moveDown() { player.dy = player.speed; }
-function moveLeft() { player.dx = -player.speed; }
-function moveRight() { player.dx = player.speed; }
-function keyDown(e) {
-    if (e.key === 'ArrowRight' || e.key === 'Right') moveRight();
-    else if (e.key === 'ArrowLeft' || e.key === 'Left') moveLeft();
-    else if (e.key === 'ArrowUp' || e.key === 'Up') moveUp();
-    else if (e.key === 'ArrowDown' || e.key === 'Down') moveDown();
+function handleJoystick(event) {
+    const rect = joystick.getBoundingClientRect();
+    const x = event.touches[0].clientX - rect.left - rect.width / 2;
+    const y = event.touches[0].clientY - rect.top - rect.height / 2;
+
+    const angle = Math.atan2(y, x);
+    const distance = Math.min(Math.sqrt(x * x + y * y), rect.width / 2);
+
+    stick.style.transform = `translate(${distance * Math.cos(angle)}px, ${distance * Math.sin(angle)}px)`;
+
+    player.dx = Math.cos(angle) * player.speed * (distance / (rect.width / 2));
+    player.dy = Math.sin(angle) * player.speed * (distance / (rect.width / 2));
 }
-function keyUp(e) {
-    if (e.key === 'ArrowRight' || e.key === 'Right' || e.key === 'ArrowLeft' || e.key === 'Left') player.dx = 0;
-    if (e.key === 'ArrowUp' || e.key === 'Up' || e.key === 'ArrowDown' || e.key === 'Down') player.dy = 0;
-}
 
-document.addEventListener('keydown', keyDown);
-document.addEventListener('keyup', keyUp);
-
-// 터치 이벤트 추가
-canvas.addEventListener('touchstart', (e) => {
-    const touchX = e.touches[0].clientX - canvas.offsetLeft;
-    const touchY = e.touches[0].clientY - canvas.offsetTop;
-
-    if (touchX < player.x) moveLeft();
-    if (touchX > player.x + player.width) moveRight();
-    if (touchY < player.y) moveUp();
-    if (touchY > player.y + player.height) moveDown();
-});
-
-canvas.addEventListener('touchend', () => {
+function resetJoystick() {
+    stick.style.transform = 'translate(-50%, -50%)';
     player.dx = 0;
     player.dy = 0;
-});
+}
+
+joystick.addEventListener('touchstart', handleJoystick);
+joystick.addEventListener('touchmove', handleJoystick);
+joystick.addEventListener('touchend', resetJoystick);
 
 update();
