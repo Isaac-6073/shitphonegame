@@ -10,10 +10,34 @@
             margin: 0 auto;
             background: #000;
         }
+        #joystick {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            touch-action: none;
+        }
+        #joystick .stick {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
     </style>
 </head>
 <body>
     <canvas id="gameCanvas" width="320" height="480"></canvas>
+    <div id="joystick">
+        <div class="stick"></div>
+    </div>
     <script src="game.js"></script>
 </body>
 </html>
